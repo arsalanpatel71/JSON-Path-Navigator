@@ -6,23 +6,36 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import IconButton from "@mui/material/IconButton";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function App() {
   const [jsonData, setJsonData] = useState(null);
   const [jsonUrl, setJsonUrl] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [copied, setCopied] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const sampleUrl =
     "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9715987&lng=77.5945627&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING";
 
   const fetchData = async (url) => {
     try {
+      setIsLoading(true);
+      setError(null);
       const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
       const data = await response.json();
       setJsonData(data);
     } catch (error) {
       console.error("Could not fetch data:", error);
+      setError(error.toString());
+      setJsonData(null);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -32,7 +45,7 @@ function App() {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(sampleUrl);
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setTimeout(() => setCopied(false), 1000);
   };
   return (
     <div
@@ -43,6 +56,12 @@ function App() {
         height: "100vh",
       }}
     >
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isLoading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <div
         style={{
           width: "70%",
@@ -128,7 +147,11 @@ function App() {
             height: "calc(100vh - 120px)",
           }}
         >
-          {jsonData && <JsonViewer data={jsonData} searchTerm={searchTerm} />}
+          {error ? (
+            <div style={{ color: "red" }}>{error}</div>
+          ) : (
+            jsonData && <JsonViewer data={jsonData} searchTerm={searchTerm} />
+          )}
         </div>
       </div>
       <div style={{ width: "30%", height: "100vh", overflowY: "auto" }}>
