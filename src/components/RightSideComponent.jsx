@@ -10,6 +10,19 @@ const RightSideComponent = () => {
             To search for any element, use <strong>Ctrl + F</strong>.
           </li>
           <li>For getting the path, double click on any element.</li>
+          <li>
+            Some API might not work because of CORS. Use{" "}
+            <a
+              href="https://chromewebstore.google.com/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf"
+              style={{
+                color: "#007bff",
+                textDecoration: "none",
+              }}
+            >
+              Allow CORS
+            </a>{" "}
+            extension.
+          </li>
         </ul>
       </div>
       <div className="famous-quote">
