@@ -134,7 +134,15 @@ const JsonViewer = ({ data }) => {
           {copied ? "Copied!" : "Copy"}
         </Button>{" "}
       </div>
-      <div style={{ overflowY: "auto", height: "calc(100% - 76px)" }}>
+      <div
+        style={{
+          overflowY: "auto",
+          height: "calc(100% - 76px)",
+          width: "100%",
+          border: "2px solid black",
+          padding: "30px",
+        }}
+      >
         {renderJson(data)}
       </div>
       <Dialog open={dialogOpen} onClose={handleCloseDialog}>
