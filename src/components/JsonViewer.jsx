@@ -139,7 +139,6 @@ const JsonViewer = ({ data }) => {
           overflowY: "auto",
           height: "calc(100% - 76px)",
           width: "100%",
-          border: "2px solid black",
           padding: "30px",
         }}
       >
