@@ -1,13 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import JsonViewer from "./components/JsonViewer";
 import "./App.css";
 import RightSideComponent from "./components/RightSideComponent";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import IconButton from "@mui/material/IconButton";
+
 function App() {
   const [jsonData, setJsonData] = useState(null);
   const [jsonUrl, setJsonUrl] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [copied, setCopied] = useState(false);
+
+  const sampleUrl =
+    "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9715987&lng=77.5945627&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING";
 
   const fetchData = async (url) => {
     try {
@@ -22,7 +29,11 @@ function App() {
   const handleGoClick = () => {
     fetchData(jsonUrl);
   };
-
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(sampleUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
   return (
     <div
       className="app-container"
@@ -83,6 +94,33 @@ function App() {
           >
             Go
           </Button>
+          {!jsonData && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "40px",
+                width: "60vw",
+                marginTop: "10px",
+              }}
+            >
+              <span>Sample URL:</span>
+              <span>{sampleUrl}</span>
+              <IconButton
+                onClick={copyToClipboard}
+                size="small"
+                sx={{
+                  backgroundColor: copied ? "white" : "default",
+                  color: copied ? "black" : "inherit",
+                  "&:hover": {
+                    backgroundColor: copied ? "#eee" : "default",
+                  },
+                }}
+              >
+                <ContentCopyIcon />
+              </IconButton>
+            </div>
+          )}
         </div>
         <div
           style={{
