@@ -136,3 +136,25 @@
   margin-top: 0;
   font-style: italic;
 }
+/* Shimmer UI CSS */
+@keyframes shimmer {
+  0%,
+  100% {
+    background-color: #282c34; 
+  }
+  50% {
+    background-color: #343a40; 
+  }
+}
+
+.shimmer-line {
+  width: 50%; /* Reduced width */
+  height: 16px;
+  margin-bottom: 16px;
+  animation: shimmer 2s infinite; 
+  animation-delay: 0s; 
+  border-radius: 8px;
+}
+.shimmer-container {
+  margin-top: 50px;
+}
