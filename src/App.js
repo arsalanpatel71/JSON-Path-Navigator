@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import JsonViewer from "./components/JsonViewer";
-import "./App.css";
 import RightSideComponent from "./components/RightSideComponent";
+import ShimmerUI from "./components/ShimmerUI ";
+import "./App.css";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import IconButton from "@mui/material/IconButton";
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
 
 function App() {
   const [jsonData, setJsonData] = useState(null);
@@ -56,12 +55,7 @@ function App() {
         height: "100vh",
       }}
     >
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={isLoading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      {isLoading && <ShimmerUI />}
       <div
         style={{
           width: "70%",
@@ -149,9 +143,11 @@ function App() {
         >
           {error ? (
             <div style={{ color: "red" }}>{error}</div>
-          ) : (
-            jsonData && <JsonViewer data={jsonData} searchTerm={searchTerm} />
-          )}
+          ) : isLoading ? (
+            <ShimmerUI /> // Render the ShimmerUI while loading
+          ) : jsonData ? (
+            <JsonViewer data={jsonData} searchTerm={searchTerm} />
+          ) : null}
         </div>
       </div>
       <div style={{ width: "30%", height: "100vh", overflowY: "auto" }}>
